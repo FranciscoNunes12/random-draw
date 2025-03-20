@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/peladinha/static/css/main.ca17d814.css",
+    "main.js": "/peladinha/static/js/main.a5ceca3a.js",
+    "index.html": "/peladinha/index.html",
+    "main.ca17d814.css.map": "/peladinha/static/css/main.ca17d814.css.map",
+    "main.a5ceca3a.js.map": "/peladinha/static/js/main.a5ceca3a.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.ca17d814.css",
+    "static/js/main.a5ceca3a.js"
+  ]
+}
