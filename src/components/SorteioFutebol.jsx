@@ -1,6 +1,12 @@
 import { useState, useEffect } from "react";
 import { v4 as uuidv4 } from "uuid";
-import { Dialog, DialogTitle, DialogContent, DialogActions, Button, TextField } from "@mui/material";
+import { 
+  Dialog, DialogTitle, DialogContent, DialogActions, 
+  Button, TextField, Paper, Typography, Box, List, ListItem, 
+  ListItemText, Container, Card, CardContent, IconButton 
+} from "@mui/material";
+import SportsSoccerIcon from '@mui/icons-material/SportsSoccer';
+import CasinoIcon from '@mui/icons-material/Casino';
 
 export default function SorteioFutebol() {
   const [history, setHistory] = useState([]);
@@ -51,54 +57,90 @@ export default function SorteioFutebol() {
   };
 
   return (
-    <div className="flex flex-col md:flex-row h-screen">
-      <div className="w-full md:w-1/4 bg-gray-100 p-4 overflow-auto hidden md:block">
-        <h2 className="text-xl font-bold mb-4">Sorteios Anteriores</h2>
-        <ul>
+    <Container sx={{ mt: 4, textAlign: "center" }}>
+      {/* Histórico de sorteios */}
+      <Paper elevation={4} sx={{ p: 3, mb: 4, borderRadius: 3 }}>
+        <Typography variant="h5" align="center" gutterBottom>
+          📜 Sorteios Anteriores
+        </Typography>
+        <List>
           {history.map((draw) => (
-            <li
-              key={draw.id}
-              className="cursor-pointer p-2 border-b hover:bg-gray-200"
-              onClick={() => setCurrentDraw(draw)}
+            <ListItem 
+              button 
+              key={draw.id} 
+              onClick={() => setCurrentDraw(draw)} 
+              sx={{ borderBottom: "1px solid #ddd", borderRadius: 2, "&:hover": { backgroundColor: "#f1f1f1" } }}
             >
-              <strong>{draw.name}</strong> - {draw.date} (Tentativa: {draw.attempt})
-            </li>
+              <ListItemText 
+                primary={<strong>{draw.name}</strong>} 
+                secondary={`${draw.date} (Tentativa: ${draw.attempt})`} 
+              />
+            </ListItem>
           ))}
-        </ul>
-      </div>
+        </List>
+      </Paper>
 
-      <div className="flex-1 p-6 flex flex-col items-center justify-center w-full">
-        <h1 className="text-2xl font-bold mb-4 text-center">Sorteio de Futebol</h1>
-        <button
+      {/* Botão de sorteio */}
+      <Box textAlign="center" mb={4}>
+        <Typography variant="h4" gutterBottom>
+          <SportsSoccerIcon sx={{ fontSize: 40, color: "#1565c0" }} /> Peladinha - Sorteio de Equipas
+        </Typography>
+        <Button 
+          variant="contained" 
+          color="primary" 
+          size="large" 
+          startIcon={<CasinoIcon />}
           onClick={realizarSorteio}
-          className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-700 mb-4 w-full max-w-xs"
+          sx={{
+            borderRadius: 3,
+            padding: "12px 24px",
+            fontSize: "1rem",
+            fontWeight: "bold",
+            transition: "0.3s",
+            "&:hover": { backgroundColor: "#003c8f" }
+          }}
         >
-          Realizar Sorteio
-        </button>
-        {currentDraw && (
-          <div className="mt-4 p-4 border rounded-lg shadow-lg w-full max-w-lg bg-white">
-            <h2 className="text-xl font-semibold text-center">Resultado do Sorteio</h2>
-            <p className="text-gray-600 text-center">Sorteado por: {currentDraw.name}</p>
-            <p className="text-gray-600 text-center">Data: {currentDraw.date}</p>
-            <p className="text-gray-600 text-center">Tentativa Nº: {currentDraw.attempt}</p>
-            {currentDraw.teams.map((team, index) => (
-              <div key={index} className="mt-2">
-                <h3 className={`text-lg font-bold text-center ${team.name === "Branca" ? "text-blue-600" : "text-red-600"}`}>
-                  {team.name}
-                </h3>
-                <ul className="list-disc ml-4 text-center">
-                  {team.players.map((player, idx) => (
-                    <li key={idx} className="text-gray-700">{player}</li>
-                  ))}
-                </ul>
-              </div>
-            ))}
-          </div>
-        )}
-      </div>
+          SORTEAR EQUIPAS
+        </Button>
+      </Box>
 
+      {/* Resultado do sorteio */}
+      {currentDraw && (
+        <Card elevation={4} sx={{ maxWidth: 500, mx: "auto", p: 3, borderRadius: 3 }}>
+          <Typography variant="h5" align="center">
+            🎯 Resultado do Sorteio
+          </Typography>
+          <Typography align="center">Sorteado por: <strong>{currentDraw.name}</strong></Typography>
+          <Typography align="center">📅 {currentDraw.date}</Typography>
+          <Typography align="center">🔄 Tentativa Nº: {currentDraw.attempt}</Typography>
+
+          {currentDraw.teams.map((team, index) => (
+            <CardContent 
+              key={index} 
+              sx={{
+                mt: 2, 
+                backgroundColor: team.name === "Branca" ? "#e3f2fd" : "#ffebee", 
+                borderRadius: 2
+              }}
+            >
+              <Typography variant="h6" align="center" sx={{ fontWeight: "bold", color: team.name === "Branca" ? "#1565c0" : "#b71c1c" }}>
+                {team.name} 🏆
+              </Typography>
+              <List>
+                {team.players.map((player, idx) => (
+                  <ListItem key={idx}>
+                    <ListItemText primary={player} />
+                  </ListItem>
+                ))}
+              </List>
+            </CardContent>
+          ))}
+        </Card>
+      )}
+
+      {/* Modal de entrada */}
       <Dialog open={openDialog} onClose={() => setOpenDialog(false)}>
-        <DialogTitle>Informações do Sorteio</DialogTitle>
+        <DialogTitle>🎲 Informações do Sorteio</DialogTitle>
         <DialogContent>
           <TextField
             autoFocus
@@ -128,6 +170,6 @@ export default function SorteioFutebol() {
           <Button onClick={confirmarSorteio} color="primary">Confirmar</Button>
         </DialogActions>
       </Dialog>
-    </div>
+    </Container>
   );
 }
