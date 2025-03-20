@@ -2,7 +2,7 @@
   "name": "sorteio-futebol",
   "version": "1.0.0",
   "private": true,
-  "homepage": "https://github.com/FranciscoNunes12/random-draw",
+  "homepage": "https://francisconunes12.github.io/random-draw/",
   "dependencies": {
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
